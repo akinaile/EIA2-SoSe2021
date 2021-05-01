@@ -29,7 +29,6 @@ var A03;
         cardArray.push(card);
         checkCard.push(card);
         card.addEventListener("click", clickHandler);
-        add();
         // Slider Kartengröße
         card.style.width = size + "px";
         card.style.height = size + "px";

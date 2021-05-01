@@ -2,38 +2,39 @@ var A03;
 (function (Aufgabe3) {
 
     //Variablen 
-    var cardAmount;
-    var cardNum = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25"];
-    var cardArray = [];
-    var cardsOpen = 0;
-    var cardsOpenArray = [];
-    var checkCard = [];
+    let cardAmount: number;
+    let cardNum: string[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25"];
+    let cardArray: HTMLElement [] = [];
+    let cardsOpen: number = 0;
+    let cardsOpenArray: HTMLElement [] = [];
+    let checkCard: HTMLElement [] = [];
 
     // Start game//load
     window.addEventListener("load", startGame);
     function startGame() {
-        var startMemory = document.querySelector(".start");
+        let startMemory = document.querySelector(".start");
         startMemory.addEventListener("click", main);
     }
 
     // FormData für Main
-    var formData;
-    var size;
-    var backGColor;
-    var backSColor;
-    var fontColor;
-    var fontStyle;
+    let formData: FormData;
+    let size: number;
+    let backGColor: FormDataEntryValue | null;
+    let backSColor: FormDataEntryValue | null;
+    let fontColor: FormDataEntryValue | null;
+    let fontStyle: FormDataEntryValue | null;
 
     //Karten erzeugen    
     function createCard(_cardNum) {
-        var card = document.createElement("div");
+        let card = document.createElement("div");
+
         card.innerHTML = "<p>" + _cardNum + "</p>";
         card.classList.add("card");
         card.classList.add("hidden");
         cardArray.push(card);
         checkCard.push(card);
         card.addEventListener("click", clickHandler);
-        add();
+
 
         // Slider Kartengröße
         card.style.width = size + "px";
@@ -61,8 +62,8 @@ var A03;
     }
 
     //click Event für die Karten
-    function clickHandler(_event) {
-        var target = _event.target;
+    function clickHandler(_event): void {
+        let target: HTMLElement = <HTMLElement>_event.target;
         if (target.classList.contains("card")) {
             cardsOpen++;
             if (!(cardsOpen > 2) && target.classList.contains("hidden") && target != cardsOpenArray[0]) {
@@ -82,7 +83,7 @@ var A03;
     }
 
     // Vergleicht Karten Inhalte bzw die Zahlen
-    function compareCards() {
+    function compareCards(): void {
         if (cardsOpenArray[0].innerHTML == cardsOpenArray[1].innerHTML) {
             for (var i = 0; i < 2; i++) {
                 cardsOpenArray[i].classList.remove("open"); 
@@ -102,7 +103,7 @@ var A03;
     }
 
 //alert am Ende
-    function checkWin() {
+    function checkWin(): void {
         if (checkCard.length == 0) {
             alert("Glückwunsch! Zeit" + hours + ":" + minutes + ":" + seconds);
         }
@@ -129,18 +130,18 @@ function add(): void{
 }
 
  //mix cards
-    function mixCards(_array) {
+    function mixCards(_array): void {
         for (var i = _array.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
-            var temp = _array[i];
+            var temp: number = _array[i];
             _array[i] = _array[j];
             _array[j] = temp;
         }
         return _array;
     }
     // Main Funktion zum Anzeigen des Memorys
-    function main(_event) {
-        var fieldset = document.querySelector(".form");
+    function main(_event: Event): void {
+        let fieldset: HTMLFormElement = <HTMLFormElement>document.querySelector(".form");
         if (fieldset.classList.contains("visible")) {
             fieldset.classList.remove("visible");
             fieldset.classList.add("is-hidden");
@@ -156,7 +157,7 @@ function add(): void{
         fontStyle = formData.get("Radiogroup");
 
         // Stepper response
-        var pairOfCards = formData.get("Stepper");
+        let pairOfCards: FormDataEntryValue | null = formData.get("Stepper");
 
         if (pairOfCards) {
             cardAmount = Number(pairOfCards);
@@ -166,14 +167,14 @@ function add(): void{
         }
 
         //Karten erzeugen
-        for (var i = 0; i < cardAmount; i++) {
+        for (let i: number = 0; i < cardAmount; i++) {
             createCard(cardNum[i]);
             createCard(cardNum[i]);
         }
 
         //Mix Karten (für die erwünschte Anzahl)    
         mixCards(cardArray);
-        for (var i = 0; i < cardArray.length; i++) {
+        for (let i: number = 0; i < cardArray.length; i++) {
             var playerbox = document.getElementById("playerbox");
             playerbox.appendChild(cardArray[i]);
         }
