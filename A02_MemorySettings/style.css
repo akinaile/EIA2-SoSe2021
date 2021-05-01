@@ -1,0 +1,100 @@
+html body{
+    background-color: rgb(45, 45, 51);
+    align-items: center;
+    justify-content: center;
+    display: grid;
+	overflow: hidden;  
+}
+
+h1 {
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* Input */
+h2{ 
+    color: white;
+	text-align: flex;
+	font-size: 3em;	
+}
+
+input[type="radio"], input[type="checkbox"], label {
+	display: inline;
+}
+
+.form {
+	text-align: flex;
+    justify-content: flex;
+    background-color: white;
+    border: none;
+    border-radius: 20px;
+}
+
+/* Spiel */
+#game{
+	justify-content: center; 
+	text-align: center;
+}
+
+#playerbox{
+	display: grid;
+	flex-wrap: wrap;
+	justify-content: flex; 
+    text-align: flex;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 0.5em;
+}
+
+/* Kartenstyle */
+.card{
+	height: 500px;
+  	width: 500px;
+	border-radius: 10px;
+	margin: 5px 5px 5px 5px;
+	text-align: center;
+	font-size: 50px;
+	display: flex;
+	justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px 0px;
+}
+
+.p {
+	position: flex;
+	text-align: flex;
+    justify-content: flex;
+    color: white;
+}
+
+#timer {
+    position: flex;
+	text-align: flex;
+    justify-content: flex;
+    color: white;
+}
+
+/* Kartenstati */
+.hidden{
+	background-color: black;
+	cursor: pointer;
+}
+
+.hidden p{
+	display: none;
+}
+
+.open{
+	background-color: rgb(250, 252, 251);
+}
+
+.taken{
+	visibility: hidden;
+}
+
+.taken p{
+	display: none;
+}
+
+.is-hidden {
+	display: none;
+}
