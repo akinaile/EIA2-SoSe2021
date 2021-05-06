@@ -14,7 +14,7 @@ var A02_EventInspector;
         var position = span;
         position.style.left = x + "px";
         position.style.top = y + "px";
-        position.textContent = "x-Koordinate" + x + "px" + " , " + "y-Koordinate" + y + "px";
+        position.textContent = "x-Koordinate " + x + " px" + " , " + "y-Koordinate " + y + " px";
     }
     function logInfo(_event) {
         console.log(_event);

@@ -1,0 +1,28 @@
+body {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+h1 {
+    justify-content: center;
+}
+
+.canvas {
+    border: 1px solid black;
+    background-color: black;
+    height: 80%;
+    width: 80%;
+    display: grid;
+}
+
+.reloadBtn {
+    position: absolute;
+    margin-bottom: -15px;
+    margin-left: 0 auto;
+    color: white;
+    background-color: black;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: large;
+}
