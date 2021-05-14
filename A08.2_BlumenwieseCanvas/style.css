@@ -1,0 +1,21 @@
+body {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+canvas {
+    border: 1px solid black;
+    border-style: none;
+    height: 90%;
+    width: 90%;
+}
+
+@media screen and (max-width:767px) {
+    canvas {
+        orientation: landscape;
+        margin: auto;
+        width: 90%;
+        height: 90%;
+    }
+}
