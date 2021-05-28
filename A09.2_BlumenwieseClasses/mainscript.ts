@@ -1,4 +1,4 @@
-namespace canvas { //Busch und Pflanze habe ich mir etwas bei Mona S. abgeschaut
+namespace L09BlumenwieseClasses { //Busch und Pflanze habe ich mir etwas bei Mona S. abgeschaut
 
     //Interface für Random Positionen (x,y)
     interface Vector {
@@ -6,21 +6,30 @@ namespace canvas { //Busch und Pflanze habe ich mir etwas bei Mona S. abgeschaut
         y: number; 
     }
     
+    let imageData: ImageData;
+    let cloudArray: Cloud [] = [];
+    let beeArray: Bee [] = [];
+    let flowerArray: Flower [] = [];
+
     //Variablen: crc2, Random
     window.addEventListener("load", handleLoad);
-    var crc2: CanvasRenderingContext2D;
+    export let crc2: CanvasRenderingContext2D;
     
     //Funktion zur Erstelleung des Canvas 
     function handleLoad(_event: Event): void {
-    
-    var canvas : HTMLCanvasElement | null = document.querySelector("canvas")!;
-    crc2 = <CanvasRenderingContext2D>canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+        console.log("Wiese start");
+
+    let canvas : HTMLCanvasElement | null = document.querySelector("canvas")!;
+    crc2 = <CanvasRenderingContext2D>canvas.getContext("2d")!;
     
     drawBackgroundGrass();
     drawBackgroundSky();
+
     drawSun();
+
+    createClouds();
+    window.setInterval(moveCloud, 50);   
+
     drawMountain1();
     drawMountain2();
     drawMountain3();
@@ -28,16 +37,79 @@ namespace canvas { //Busch und Pflanze habe ich mir etwas bei Mona S. abgeschaut
     drawBush2();
     drawBush3();
     drawBush4();
-    drawTree1();
-    drawTreeCrown1();
-    drawClowd1();
-    drawClowd2();
-    drawFlower1(550, 560);
-    drawFlower2(550, 560);
 
-
-    }
+    createFlower();
+    drawFlower();
     
+    drawTreeCrown1();
+
+    drawNest();
+
+    //backgroud imageData
+    imageData = crc2.getImageData(0, 0, 1000, 750);
+    createBee(10);
+    window.setInterval(moveBee, 20);
+
+}//handleload
+   
+function createBee(_amound: number): void {
+    for (let i: number = 0; i < 10; i++) {
+        // console.log("create bee");
+        let bee: Bee = new Bee(0.8);
+        beeArray.push(bee);    
+    }
+}
+
+function moveBee(): void {    
+    for (let bee of beeArray) {
+        bee.move(1 / 50); //20 ms = 1/50
+        bee.draw();
+    }
+}
+
+function createClouds(): void {
+    for (let i: number = 0; i < 1; i++) {
+        let cloud: Cloud = new Cloud(0.5);
+        cloudArray.push(cloud);
+        // console.log(cloudArray);                 
+    }
+}
+
+function moveCloud(): void {
+    // console.log("cloud float");
+    crc2.clearRect(0, 0, 1000, 750);
+    crc2.putImageData(imageData, 0, 0);
+
+    for (let cloud of cloudArray) {
+        cloud.move(1 / 50); //20 ms = 1/50
+        cloud.draw();
+    }
+} 
+
+function createFlower(): void {
+    console.log("create flower");
+    for (let i: number = 0; i < 10; i++) {
+        let flower: Flower = new Flower();
+        flowerArray.push(flower);  
+    } 
+    for (let i: number = 0; i < 10; i++) {
+        let flower2: Flower = new Flower();
+        flowerArray.push(flower2);  
+}
+}
+function drawFlower(): void {
+    for (let flower of flowerArray) {
+        let randomX: number = Math.floor(Math.random() * 900);
+        let randomY: number = Math.floor(Math.random() * 200);
+        flower.draw(randomX + 50, randomY + 370);
+    }
+    for (let flower2 of flowerArray) {
+        let randomX: number = Math.floor(Math.random() * 900);
+        let randomY: number = Math.floor(Math.random() * 200);
+        flower2.draw2(randomX + 50, randomY + 470);
+    }
+}
+
 //Sky
     function drawBackgroundSky (): void {
         let grd = crc2.createLinearGradient(0, 0, 0, 400); //create Gradient
@@ -66,7 +138,7 @@ namespace canvas { //Busch und Pflanze habe ich mir etwas bei Mona S. abgeschaut
         crc2.fill();
 
         crc2.closePath();
-        console.log("sun");
+        //console.log("sun");
     }
 
 //Mountains
@@ -83,7 +155,7 @@ namespace canvas { //Busch und Pflanze habe ich mir etwas bei Mona S. abgeschaut
         crc2.fill();
         crc2.closePath();
 
-        console.log("Mountain");
+        //console.log("Mountain");
     }
 
     function drawMountain2 (): void {
@@ -99,7 +171,7 @@ namespace canvas { //Busch und Pflanze habe ich mir etwas bei Mona S. abgeschaut
         crc2.fill();
         crc2.closePath();
 
-        console.log("Mountain");
+        //console.log("Mountain");
     }
 
     function drawMountain3 (): void {
@@ -112,10 +184,11 @@ namespace canvas { //Busch und Pflanze habe ich mir etwas bei Mona S. abgeschaut
         crc2.lineTo(Math.floor((400) + 1), (400) + 1);
         crc2.lineTo(Math.floor( (200) + 1), (80) + 1);
         crc2.fillStyle = grd;
+    
         crc2.fill();
         crc2.closePath();
 
-        console.log("Mountain");
+        //console.log("Mountain");
     }
 
 
@@ -132,11 +205,13 @@ namespace canvas { //Busch und Pflanze habe ich mir etwas bei Mona S. abgeschaut
         crc2.arc(50 + 80, 360 + 20, 30, 0, 2 * Math.PI);
         crc2.arc(50 + 120, 360 + 40, 30, 0, 2 * Math.PI);
         crc2.arc(50 + 90, 360 + 30, 35, 0, 2 * Math.PI);
-
+        crc2.strokeStyle = "#006600";
+        crc2.lineWidth = 2;
+        crc2.stroke();
         crc2.closePath();
         crc2.fill();
 
-        console.log("Bush");
+        //console.log("Bush");
     }
 
     function drawBush2(): void {
@@ -151,11 +226,13 @@ namespace canvas { //Busch und Pflanze habe ich mir etwas bei Mona S. abgeschaut
         crc2.arc(100 + 80, 460 + 20, 30, 0, 2 * Math.PI);
         crc2.arc(100 + 120, 460 + 40, 30, 0, 2 * Math.PI);
         crc2.arc(100 + 90, 460 + 30, 35, 0, 2 * Math.PI);
-
+        crc2.strokeStyle = "#006600";
+        crc2.lineWidth = 2;
+        crc2.stroke();
         crc2.closePath();
         crc2.fill();
 
-        console.log("Bush");
+        //console.log("Bush");
     }
 
     function drawBush3(): void {
@@ -170,11 +247,13 @@ namespace canvas { //Busch und Pflanze habe ich mir etwas bei Mona S. abgeschaut
         crc2.arc(700 + 80, 460 + 20, 30, 0, 2 * Math.PI);
         crc2.arc(700 + 120, 460 + 40, 30, 0, 2 * Math.PI);
         crc2.arc(700 + 90, 460 + 30, 35, 0, 2 * Math.PI);
-
+        crc2.strokeStyle = "#006600";
+        crc2.lineWidth = 2;
+        crc2.stroke();
         crc2.closePath();
         crc2.fill();
 
-        console.log("Bush");
+        //console.log("Bush");
     }
 
         function drawBush4(): void {
@@ -189,15 +268,33 @@ namespace canvas { //Busch und Pflanze habe ich mir etwas bei Mona S. abgeschaut
         crc2.arc(850 + 80, 360 + 20, 30, 0, 2 * Math.PI);
         crc2.arc(850 + 120, 360 + 40, 30, 0, 2 * Math.PI);
         crc2.arc(850 + 90, 360 + 30, 35, 0, 2 * Math.PI);
-
+        crc2.strokeStyle = "#006600";
+        crc2.lineWidth = 2;
+        crc2.stroke();
         crc2.closePath();
         crc2.fill();
 
-        console.log("Bush");
+        //console.log("Bush");
     }
 
 //Baum
     function drawTreeCrown1(): void {
+        //Ast
+        crc2.beginPath();
+        crc2.fillStyle = "#61210B";
+        crc2.fillRect(700, 390, 100, 20);
+
+        crc2.closePath();
+        crc2.restore();
+        //Stamm
+        crc2.save();
+        crc2.beginPath();
+        crc2.fillStyle = "#61210B";
+        crc2.rect(0, 0, 50, 150);
+        crc2.fillRect(800, 150, 70, 450);
+        crc2.closePath;
+        crc2.restore();
+        //Krone
         let grd = crc2.createLinearGradient(0, 0, 0, 450); //create Gradient
         grd.addColorStop(0, "#A5DF00");
         grd.addColorStop(1, "#298A08");
@@ -209,127 +306,56 @@ namespace canvas { //Busch und Pflanze habe ich mir etwas bei Mona S. abgeschaut
         crc2.arc(760 + 120, 150 + 100, 120, 0, 2 * Math.PI);
         crc2.arc(700 + 90, 150 + 110, 110, 0, 2 * Math.PI);
         crc2.arc(700 + 120, 150 + 90, 120, 0, 2 * Math.PI);
-
+        crc2.strokeStyle = "#006600";
+        crc2.lineWidth = 2;
+        crc2.stroke();
         crc2.closePath();
         crc2.fill();
 }
 
-    function drawTree1 (): void {
-        crc2.beginPath();
-        crc2.fillStyle = "#61210B";
-        crc2.rect(0, 0, 50, 150);
-        crc2.fillRect(800, 150, 70, 450);
-        crc2.closePath;
-}
 
-//Wolken
-function drawClowd1(): void {
-    let grd = crc2.createLinearGradient(0, 0, 0, 150); //create Gradient
-    grd.addColorStop(0, "#FFFFFF");
-    grd.addColorStop(1, "#A9E2F3");
 
+
+function drawNest(): void {
+    //Nest
+    crc2.save();
     crc2.beginPath();
-    crc2.fillStyle = grd;
-            //x        //y
-    crc2.arc(150 + 60, 60 + 40, 25, 0, 2 * Math.PI); 
-    crc2.arc(150 + 80, 60 + 20, 30, 0, 2 * Math.PI);
-    crc2.arc(150 + 120, 60 + 40, 30, 0, 2 * Math.PI);
-    crc2.arc(150 + 90, 60 + 30, 35, 0, 2 * Math.PI);
-
+    crc2.ellipse(750, 460, 50, 65, Math.PI / 1, 0, 2 * Math.PI);
+    crc2.fillStyle = "#FF9933";
+    crc2.strokeStyle = "#996600";
+    crc2.lineWidth = 5;
+    crc2.stroke();
+    crc2.fill();
     crc2.closePath();
-    crc2.fill();
-
-    console.log("Wolke");
-}
-
-function drawClowd2(): void {
-    let grd = crc2.createLinearGradient(0, 0, 0, 250); //create Gradient
-    grd.addColorStop(0, "#FFFFFF");
-    grd.addColorStop(1, "#A9E2F3");
-
+    //streifen
     crc2.beginPath();
-    crc2.fillStyle = grd;
-            //x        //y
-    crc2.arc(250 + 60, 160 + 40, 25, 0, 2 * Math.PI); 
-    crc2.arc(250 + 80, 160 + 20, 30, 0, 2 * Math.PI);
-    crc2.arc(250 + 120, 160 + 40, 30, 0, 2 * Math.PI);
-    crc2.arc(250 + 90, 160 + 30, 35, 0, 2 * Math.PI);
-
+    crc2.moveTo(710, 420);
+    crc2.lineTo(790, 420);
+    crc2.moveTo(700, 450);
+    crc2.lineTo(800, 450);
+    crc2.moveTo(700, 470);
+    crc2.lineTo(800, 470);
+    crc2.moveTo(710, 500);
+    crc2.lineTo(790, 500);
+    crc2.strokeStyle = "#996600";
+    crc2.lineWidth = 3;
+    crc2.stroke();
     crc2.closePath();
+    //tür
+    crc2.beginPath();
+    crc2.arc(750, 470, 15, 0, 2 * Math.PI);
+    crc2.fillStyle = "#996600";
     crc2.fill();
-
-    console.log("Wolke");
-}
-
-//Pflanzen  
-    function drawFlower1(_x: number, _y: number): void { //von Mona S. inspiriert
-        for (let index: number = 0; index < 7; index++) {
-        let greenFlower: number = Math.floor(Math.random() * 200);
-        let blueFlower: number = Math.floor(Math.random() * 200);
-        let redFlower: number = Math.floor(Math.random() * 200);
-        let _x : number = 700 * Math.random();
-        let _y : number = 400;
-
-        //Stiel
-        crc2.beginPath();
-        crc2.strokeStyle = "#088A08";
-        crc2.fillStyle = "#0B610B";
-        crc2.fillRect(_x - 2, _y + 10, 4, 40); 
-
-        //Blüte
-        crc2.beginPath();
-        crc2.fillStyle = "rgb( " + greenFlower + ", " + blueFlower + ", " + redFlower + ")";
-
-        crc2.moveTo(_x, _y);
-        crc2.arc(_x, _y - 9, 7, 0, 2 * Math.PI);
-        crc2.arc(_x + 6, _y + 6, 7, 0, 2 * Math.PI);
-        crc2.arc(_x - 6, _y + 6, 7, 0, 2 * Math.PI);
-        crc2.arc(_x - 8, _y - 4, 7, 0, 2 * Math.PI);
-        crc2.arc(_x + 8, _y - 4, 7, 0, 2 * Math.PI);
-        crc2.fill();
-
-        //Punkt 
-        crc2.beginPath();
-        crc2.fillStyle = "#FFBF00";
-        crc2.arc(_x, _y, 3, 0, 2 * Math.PI);
-        crc2.closePath();
-        crc2.fill();
-    }
-}
-
-function drawFlower2(_x: number, _y: number): void { //von Mona S. inspiriert
-    for (let index: number = 0; index < 5; index++) {
-    let greenFlower: number = Math.floor(Math.random() * 200);
-    let blueFlower: number = Math.floor(Math.random() * 200);
-    let redFlower: number = Math.floor(Math.random() * 200);
-    let _x : number = 700 * Math.random();
-    let _y : number = 600;
-
-    //Stiel
-    crc2.beginPath();
-    crc2.strokeStyle = "#088A08";
-    crc2.fillStyle = "#0B610B";
-    crc2.fillRect(_x - 2, _y + 10, 4, 40); 
-
-    //Blüte
-    crc2.beginPath();
-    crc2.fillStyle = "rgb( " + greenFlower + ", " + blueFlower + ", " + redFlower + ")";
-
-    crc2.moveTo(_x, _y);
-    crc2.arc(_x, _y - 9, 7, 0, 2 * Math.PI);
-    crc2.arc(_x + 6, _y + 6, 7, 0, 2 * Math.PI);
-    crc2.arc(_x - 6, _y + 6, 7, 0, 2 * Math.PI);
-    crc2.arc(_x - 8, _y - 4, 7, 0, 2 * Math.PI);
-    crc2.arc(_x + 8, _y - 4, 7, 0, 2 * Math.PI);
-    crc2.fill();
-
-    //Punkt 
-    crc2.beginPath();
-    crc2.fillStyle = "#FFBF00";
-    crc2.arc(_x, _y, 3, 0, 2 * Math.PI);
     crc2.closePath();
+    //türschatten
+    crc2.beginPath();
+    crc2.arc(750, 470, 10, 0, 2 * Math.PI);
+    crc2.fillStyle = "#663300";
     crc2.fill();
-}
+    crc2.closePath();
+
+
+
 }
 
 } //namespaceklammer

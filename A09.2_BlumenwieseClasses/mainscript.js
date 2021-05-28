@@ -1,17 +1,21 @@
-var canvas;
-(function (canvas_1) {
+var L09BlumenwieseClasses;
+(function (L09BlumenwieseClasses) {
+    var imageData;
+    var cloudArray = [];
+    var beeArray = [];
+    var flowerArray = [];
     //Variablen: crc2, Random
     window.addEventListener("load", handleLoad);
-    var crc2;
     //Funktion zur Erstelleung des Canvas 
     function handleLoad(_event) {
+        console.log("Wiese start");
         var canvas = document.querySelector("canvas");
-        crc2 = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        L09BlumenwieseClasses.crc2 = canvas.getContext("2d");
         drawBackgroundGrass();
         drawBackgroundSky();
         drawSun();
+        createClouds();
+        window.setInterval(moveCloud, 50);
         drawMountain1();
         drawMountain2();
         drawMountain3();
@@ -19,252 +23,279 @@ var canvas;
         drawBush2();
         drawBush3();
         drawBush4();
-        drawTree1();
+        createFlower();
+        drawFlower();
         drawTreeCrown1();
-        drawClowd1();
-        drawClowd2();
-        drawFlower1(550, 560);
-        drawFlower2(550, 560);
+        drawNest();
+        //backgroud imageData
+        imageData = L09BlumenwieseClasses.crc2.getImageData(0, 0, 1000, 750);
+        createBee(10);
+        window.setInterval(moveBee, 20);
+    } //handleload
+    function createBee(_amound) {
+        for (var i = 0; i < 10; i++) {
+            // console.log("create bee");
+            var bee = new L09BlumenwieseClasses.Bee(0.8);
+            beeArray.push(bee);
+        }
+    }
+    function moveBee() {
+        for (var _i = 0, beeArray_1 = beeArray; _i < beeArray_1.length; _i++) {
+            var bee = beeArray_1[_i];
+            bee.move(1 / 50); //20 ms = 1/50
+            bee.draw();
+        }
+    }
+    function createClouds() {
+        for (var i = 0; i < 1; i++) {
+            var cloud = new L09BlumenwieseClasses.Cloud(0.5);
+            cloudArray.push(cloud);
+            // console.log(cloudArray);                 
+        }
+    }
+    function moveCloud() {
+        // console.log("cloud float");
+        L09BlumenwieseClasses.crc2.clearRect(0, 0, 1000, 750);
+        L09BlumenwieseClasses.crc2.putImageData(imageData, 0, 0);
+        for (var _i = 0, cloudArray_1 = cloudArray; _i < cloudArray_1.length; _i++) {
+            var cloud = cloudArray_1[_i];
+            cloud.move(1 / 50); //20 ms = 1/50
+            cloud.draw();
+        }
+    }
+    function createFlower() {
+        console.log("create flower");
+        for (var i = 0; i < 10; i++) {
+            var flower = new L09BlumenwieseClasses.Flower();
+            flowerArray.push(flower);
+        }
+        for (var i = 0; i < 10; i++) {
+            var flower2 = new L09BlumenwieseClasses.Flower();
+            flowerArray.push(flower2);
+        }
+    }
+    function drawFlower() {
+        for (var _i = 0, flowerArray_1 = flowerArray; _i < flowerArray_1.length; _i++) {
+            var flower = flowerArray_1[_i];
+            var randomX = Math.floor(Math.random() * 900);
+            var randomY = Math.floor(Math.random() * 200);
+            flower.draw(randomX + 50, randomY + 370);
+        }
+        for (var _a = 0, flowerArray_2 = flowerArray; _a < flowerArray_2.length; _a++) {
+            var flower2 = flowerArray_2[_a];
+            var randomX = Math.floor(Math.random() * 900);
+            var randomY = Math.floor(Math.random() * 200);
+            flower2.draw2(randomX + 50, randomY + 470);
+        }
     }
     //Sky
     function drawBackgroundSky() {
-        var grd = crc2.createLinearGradient(0, 0, 0, 400); //create Gradient
+        var grd = L09BlumenwieseClasses.crc2.createLinearGradient(0, 0, 0, 400); //create Gradient
         grd.addColorStop(0, "#01A9DB");
         grd.addColorStop(1, "#A9F5F2");
-        crc2.fillStyle = grd; //fill with gradient
-        crc2.fillRect(0, 0, 1000, 400);
+        L09BlumenwieseClasses.crc2.fillStyle = grd; //fill with gradient
+        L09BlumenwieseClasses.crc2.fillRect(0, 0, 1000, 400);
     }
     //grass
     function drawBackgroundGrass() {
-        var grd = crc2.createLinearGradient(0, 0, 0, 700); //create Gradient
+        var grd = L09BlumenwieseClasses.crc2.createLinearGradient(0, 0, 0, 700); //create Gradient
         grd.addColorStop(0, "#01DF3A");
         grd.addColorStop(1, "#088A4B");
-        crc2.fillStyle = grd;
-        crc2.fillRect(0, 0, 1000, 750);
+        L09BlumenwieseClasses.crc2.fillStyle = grd;
+        L09BlumenwieseClasses.crc2.fillRect(0, 0, 1000, 750);
     }
     //Sun
     function drawSun() {
-        crc2.beginPath();
-        crc2.arc(900, 50, 100, 0, 2 * Math.PI);
-        crc2.fillStyle = "#FACC2E";
-        crc2.fill();
-        crc2.closePath();
-        console.log("sun");
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.arc(900, 50, 100, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.fillStyle = "#FACC2E";
+        L09BlumenwieseClasses.crc2.fill();
+        L09BlumenwieseClasses.crc2.closePath();
+        //console.log("sun");
     }
     //Mountains
     function drawMountain1() {
-        var grd = crc2.createLinearGradient(0, 0, 0, 200); //create Gradient
+        var grd = L09BlumenwieseClasses.crc2.createLinearGradient(0, 0, 0, 200); //create Gradient
         grd.addColorStop(0, "white");
         grd.addColorStop(1, "#6E6E6E");
-        crc2.beginPath();
-        crc2.moveTo(Math.floor((0) + 1), (400) + 1);
-        crc2.lineTo(Math.floor((200) + 1), (400) + 1);
-        crc2.lineTo(Math.floor((100) + 1), (50) + 1);
-        crc2.fillStyle = grd;
-        crc2.fill();
-        crc2.closePath();
-        console.log("Mountain");
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.moveTo(Math.floor((0) + 1), (400) + 1);
+        L09BlumenwieseClasses.crc2.lineTo(Math.floor((200) + 1), (400) + 1);
+        L09BlumenwieseClasses.crc2.lineTo(Math.floor((100) + 1), (50) + 1);
+        L09BlumenwieseClasses.crc2.fillStyle = grd;
+        L09BlumenwieseClasses.crc2.fill();
+        L09BlumenwieseClasses.crc2.closePath();
+        //console.log("Mountain");
     }
     function drawMountain2() {
-        var grd = crc2.createLinearGradient(0, 0, 0, 250); //create Gradient
+        var grd = L09BlumenwieseClasses.crc2.createLinearGradient(0, 0, 0, 250); //create Gradient
         grd.addColorStop(0, "white");
         grd.addColorStop(1, "#6E6E6E");
-        crc2.beginPath();
-        crc2.moveTo(Math.floor((50) + 1), (400) + 1);
-        crc2.lineTo(Math.floor((600) + 1), (400) + 1);
-        crc2.lineTo(Math.floor((400) + 1), (90) + 1);
-        crc2.fillStyle = grd;
-        crc2.fill();
-        crc2.closePath();
-        console.log("Mountain");
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.moveTo(Math.floor((50) + 1), (400) + 1);
+        L09BlumenwieseClasses.crc2.lineTo(Math.floor((600) + 1), (400) + 1);
+        L09BlumenwieseClasses.crc2.lineTo(Math.floor((400) + 1), (90) + 1);
+        L09BlumenwieseClasses.crc2.fillStyle = grd;
+        L09BlumenwieseClasses.crc2.fill();
+        L09BlumenwieseClasses.crc2.closePath();
+        //console.log("Mountain");
     }
     function drawMountain3() {
-        var grd = crc2.createLinearGradient(0, 0, 0, 220); //create Gradient
+        var grd = L09BlumenwieseClasses.crc2.createLinearGradient(0, 0, 0, 220); //create Gradient
         grd.addColorStop(0, "white");
         grd.addColorStop(1, "#848484");
-        crc2.beginPath();
-        crc2.moveTo(Math.floor((0) + 1), (400) + 1);
-        crc2.lineTo(Math.floor((400) + 1), (400) + 1);
-        crc2.lineTo(Math.floor((200) + 1), (80) + 1);
-        crc2.fillStyle = grd;
-        crc2.fill();
-        crc2.closePath();
-        console.log("Mountain");
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.moveTo(Math.floor((0) + 1), (400) + 1);
+        L09BlumenwieseClasses.crc2.lineTo(Math.floor((400) + 1), (400) + 1);
+        L09BlumenwieseClasses.crc2.lineTo(Math.floor((200) + 1), (80) + 1);
+        L09BlumenwieseClasses.crc2.fillStyle = grd;
+        L09BlumenwieseClasses.crc2.fill();
+        L09BlumenwieseClasses.crc2.closePath();
+        //console.log("Mountain");
     }
     //Busch
     function drawBush1() {
-        var grd = crc2.createLinearGradient(0, 0, 0, 430); //create Gradient
+        var grd = L09BlumenwieseClasses.crc2.createLinearGradient(0, 0, 0, 430); //create Gradient
         grd.addColorStop(0, "#A5DF00");
         grd.addColorStop(1, "#298A08");
-        crc2.beginPath();
-        crc2.fillStyle = grd;
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.fillStyle = grd;
         //x        //y
-        crc2.arc(50 + 60, 360 + 40, 25, 0, 2 * Math.PI); //Busch Koodinaten von Mona Stingel inspiriert 
-        crc2.arc(50 + 80, 360 + 20, 30, 0, 2 * Math.PI);
-        crc2.arc(50 + 120, 360 + 40, 30, 0, 2 * Math.PI);
-        crc2.arc(50 + 90, 360 + 30, 35, 0, 2 * Math.PI);
-        crc2.closePath();
-        crc2.fill();
-        console.log("Bush");
+        L09BlumenwieseClasses.crc2.arc(50 + 60, 360 + 40, 25, 0, 2 * Math.PI); //Busch Koodinaten von Mona Stingel inspiriert 
+        L09BlumenwieseClasses.crc2.arc(50 + 80, 360 + 20, 30, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.arc(50 + 120, 360 + 40, 30, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.arc(50 + 90, 360 + 30, 35, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.strokeStyle = "#006600";
+        L09BlumenwieseClasses.crc2.lineWidth = 2;
+        L09BlumenwieseClasses.crc2.stroke();
+        L09BlumenwieseClasses.crc2.closePath();
+        L09BlumenwieseClasses.crc2.fill();
+        //console.log("Bush");
     }
     function drawBush2() {
-        var grd = crc2.createLinearGradient(0, 0, 0, 530); //create Gradient
+        var grd = L09BlumenwieseClasses.crc2.createLinearGradient(0, 0, 0, 530); //create Gradient
         grd.addColorStop(0, "#A5DF00");
         grd.addColorStop(1, "#298A08");
-        crc2.beginPath();
-        crc2.fillStyle = grd;
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.fillStyle = grd;
         //x        //y
-        crc2.arc(100 + 60, 460 + 40, 25, 0, 2 * Math.PI); //Busch Koodinaten von Mona Stingel inspiriert 
-        crc2.arc(100 + 80, 460 + 20, 30, 0, 2 * Math.PI);
-        crc2.arc(100 + 120, 460 + 40, 30, 0, 2 * Math.PI);
-        crc2.arc(100 + 90, 460 + 30, 35, 0, 2 * Math.PI);
-        crc2.closePath();
-        crc2.fill();
-        console.log("Bush");
+        L09BlumenwieseClasses.crc2.arc(100 + 60, 460 + 40, 25, 0, 2 * Math.PI); //Busch Koodinaten von Mona Stingel inspiriert 
+        L09BlumenwieseClasses.crc2.arc(100 + 80, 460 + 20, 30, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.arc(100 + 120, 460 + 40, 30, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.arc(100 + 90, 460 + 30, 35, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.strokeStyle = "#006600";
+        L09BlumenwieseClasses.crc2.lineWidth = 2;
+        L09BlumenwieseClasses.crc2.stroke();
+        L09BlumenwieseClasses.crc2.closePath();
+        L09BlumenwieseClasses.crc2.fill();
+        //console.log("Bush");
     }
     function drawBush3() {
-        var grd = crc2.createLinearGradient(0, 0, 0, 530); //create Gradient
+        var grd = L09BlumenwieseClasses.crc2.createLinearGradient(0, 0, 0, 530); //create Gradient
         grd.addColorStop(0, "#A5DF00");
         grd.addColorStop(1, "#298A08");
-        crc2.beginPath();
-        crc2.fillStyle = grd;
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.fillStyle = grd;
         //x        //y
-        crc2.arc(700 + 60, 460 + 40, 25, 0, 2 * Math.PI); //Busch Koodinaten von Mona Stingel inspiriert 
-        crc2.arc(700 + 80, 460 + 20, 30, 0, 2 * Math.PI);
-        crc2.arc(700 + 120, 460 + 40, 30, 0, 2 * Math.PI);
-        crc2.arc(700 + 90, 460 + 30, 35, 0, 2 * Math.PI);
-        crc2.closePath();
-        crc2.fill();
-        console.log("Bush");
+        L09BlumenwieseClasses.crc2.arc(700 + 60, 460 + 40, 25, 0, 2 * Math.PI); //Busch Koodinaten von Mona Stingel inspiriert 
+        L09BlumenwieseClasses.crc2.arc(700 + 80, 460 + 20, 30, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.arc(700 + 120, 460 + 40, 30, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.arc(700 + 90, 460 + 30, 35, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.strokeStyle = "#006600";
+        L09BlumenwieseClasses.crc2.lineWidth = 2;
+        L09BlumenwieseClasses.crc2.stroke();
+        L09BlumenwieseClasses.crc2.closePath();
+        L09BlumenwieseClasses.crc2.fill();
+        //console.log("Bush");
     }
     function drawBush4() {
-        var grd = crc2.createLinearGradient(0, 0, 0, 450); //create Gradient
+        var grd = L09BlumenwieseClasses.crc2.createLinearGradient(0, 0, 0, 450); //create Gradient
         grd.addColorStop(0, "#A5DF00");
         grd.addColorStop(1, "#298A08");
-        crc2.beginPath();
-        crc2.fillStyle = grd;
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.fillStyle = grd;
         //x        //y
-        crc2.arc(850 + 60, 360 + 40, 25, 0, 2 * Math.PI); //Busch Koodinaten von Mona Stingel inspiriert 
-        crc2.arc(850 + 80, 360 + 20, 30, 0, 2 * Math.PI);
-        crc2.arc(850 + 120, 360 + 40, 30, 0, 2 * Math.PI);
-        crc2.arc(850 + 90, 360 + 30, 35, 0, 2 * Math.PI);
-        crc2.closePath();
-        crc2.fill();
-        console.log("Bush");
+        L09BlumenwieseClasses.crc2.arc(850 + 60, 360 + 40, 25, 0, 2 * Math.PI); //Busch Koodinaten von Mona Stingel inspiriert 
+        L09BlumenwieseClasses.crc2.arc(850 + 80, 360 + 20, 30, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.arc(850 + 120, 360 + 40, 30, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.arc(850 + 90, 360 + 30, 35, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.strokeStyle = "#006600";
+        L09BlumenwieseClasses.crc2.lineWidth = 2;
+        L09BlumenwieseClasses.crc2.stroke();
+        L09BlumenwieseClasses.crc2.closePath();
+        L09BlumenwieseClasses.crc2.fill();
+        //console.log("Bush");
     }
     //Baum
     function drawTreeCrown1() {
-        var grd = crc2.createLinearGradient(0, 0, 0, 450); //create Gradient
+        //Ast
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.fillStyle = "#61210B";
+        L09BlumenwieseClasses.crc2.fillRect(700, 390, 100, 20);
+        L09BlumenwieseClasses.crc2.closePath();
+        L09BlumenwieseClasses.crc2.restore();
+        //Stamm
+        L09BlumenwieseClasses.crc2.save();
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.fillStyle = "#61210B";
+        L09BlumenwieseClasses.crc2.rect(0, 0, 50, 150);
+        L09BlumenwieseClasses.crc2.fillRect(800, 150, 70, 450);
+        L09BlumenwieseClasses.crc2.closePath;
+        L09BlumenwieseClasses.crc2.restore();
+        //Krone
+        var grd = L09BlumenwieseClasses.crc2.createLinearGradient(0, 0, 0, 450); //create Gradient
         grd.addColorStop(0, "#A5DF00");
         grd.addColorStop(1, "#298A08");
-        crc2.beginPath();
-        crc2.fillStyle = grd;
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.fillStyle = grd;
         //x        //y
-        crc2.arc(750 + 90, 150 + 100, 90, 0, 2 * Math.PI);
-        crc2.arc(760 + 120, 150 + 100, 120, 0, 2 * Math.PI);
-        crc2.arc(700 + 90, 150 + 110, 110, 0, 2 * Math.PI);
-        crc2.arc(700 + 120, 150 + 90, 120, 0, 2 * Math.PI);
-        crc2.closePath();
-        crc2.fill();
+        L09BlumenwieseClasses.crc2.arc(750 + 90, 150 + 100, 90, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.arc(760 + 120, 150 + 100, 120, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.arc(700 + 90, 150 + 110, 110, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.arc(700 + 120, 150 + 90, 120, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.strokeStyle = "#006600";
+        L09BlumenwieseClasses.crc2.lineWidth = 2;
+        L09BlumenwieseClasses.crc2.stroke();
+        L09BlumenwieseClasses.crc2.closePath();
+        L09BlumenwieseClasses.crc2.fill();
     }
-    function drawTree1() {
-        crc2.beginPath();
-        crc2.fillStyle = "#61210B";
-        crc2.rect(0, 0, 50, 150);
-        crc2.fillRect(800, 150, 70, 450);
-        crc2.closePath;
+    function drawNest() {
+        //Nest
+        L09BlumenwieseClasses.crc2.save();
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.ellipse(750, 460, 50, 65, Math.PI / 1, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.fillStyle = "#FF9933";
+        L09BlumenwieseClasses.crc2.strokeStyle = "#996600";
+        L09BlumenwieseClasses.crc2.lineWidth = 5;
+        L09BlumenwieseClasses.crc2.stroke();
+        L09BlumenwieseClasses.crc2.fill();
+        L09BlumenwieseClasses.crc2.closePath();
+        //streifen
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.moveTo(710, 420);
+        L09BlumenwieseClasses.crc2.lineTo(790, 420);
+        L09BlumenwieseClasses.crc2.moveTo(700, 450);
+        L09BlumenwieseClasses.crc2.lineTo(800, 450);
+        L09BlumenwieseClasses.crc2.moveTo(700, 470);
+        L09BlumenwieseClasses.crc2.lineTo(800, 470);
+        L09BlumenwieseClasses.crc2.moveTo(710, 500);
+        L09BlumenwieseClasses.crc2.lineTo(790, 500);
+        L09BlumenwieseClasses.crc2.strokeStyle = "#996600";
+        L09BlumenwieseClasses.crc2.lineWidth = 3;
+        L09BlumenwieseClasses.crc2.stroke();
+        L09BlumenwieseClasses.crc2.closePath();
+        //tür
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.arc(750, 470, 15, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.fillStyle = "#996600";
+        L09BlumenwieseClasses.crc2.fill();
+        L09BlumenwieseClasses.crc2.closePath();
+        //türschatten
+        L09BlumenwieseClasses.crc2.beginPath();
+        L09BlumenwieseClasses.crc2.arc(750, 470, 10, 0, 2 * Math.PI);
+        L09BlumenwieseClasses.crc2.fillStyle = "#663300";
+        L09BlumenwieseClasses.crc2.fill();
+        L09BlumenwieseClasses.crc2.closePath();
     }
-    //Wolken
-    function drawClowd1() {
-        var grd = crc2.createLinearGradient(0, 0, 0, 150); //create Gradient
-        grd.addColorStop(0, "#FFFFFF");
-        grd.addColorStop(1, "#A9E2F3");
-        crc2.beginPath();
-        crc2.fillStyle = grd;
-        //x        //y
-        crc2.arc(150 + 60, 60 + 40, 25, 0, 2 * Math.PI);
-        crc2.arc(150 + 80, 60 + 20, 30, 0, 2 * Math.PI);
-        crc2.arc(150 + 120, 60 + 40, 30, 0, 2 * Math.PI);
-        crc2.arc(150 + 90, 60 + 30, 35, 0, 2 * Math.PI);
-        crc2.closePath();
-        crc2.fill();
-        console.log("Wolke");
-    }
-    function drawClowd2() {
-        var grd = crc2.createLinearGradient(0, 0, 0, 250); //create Gradient
-        grd.addColorStop(0, "#FFFFFF");
-        grd.addColorStop(1, "#A9E2F3");
-        crc2.beginPath();
-        crc2.fillStyle = grd;
-        //x        //y
-        crc2.arc(250 + 60, 160 + 40, 25, 0, 2 * Math.PI);
-        crc2.arc(250 + 80, 160 + 20, 30, 0, 2 * Math.PI);
-        crc2.arc(250 + 120, 160 + 40, 30, 0, 2 * Math.PI);
-        crc2.arc(250 + 90, 160 + 30, 35, 0, 2 * Math.PI);
-        crc2.closePath();
-        crc2.fill();
-        console.log("Wolke");
-    }
-    //Pflanzen  
-    function drawFlower1(_x, _y) {
-        for (var index = 0; index < 7; index++) {
-            var greenFlower = Math.floor(Math.random() * 200);
-            var blueFlower = Math.floor(Math.random() * 200);
-            var redFlower = Math.floor(Math.random() * 200);
-            var _x_1 = 700 * Math.random();
-            var _y_1 = 400;
-            //Stiel
-            crc2.beginPath();
-            crc2.strokeStyle = "#088A08";
-            crc2.fillStyle = "#0B610B";
-            crc2.fillRect(_x_1 - 2, _y_1 + 10, 4, 40);
-            //Blüte
-            crc2.beginPath();
-            crc2.fillStyle = "rgb( " + greenFlower + ", " + blueFlower + ", " + redFlower + ")";
-            crc2.moveTo(_x_1, _y_1);
-            crc2.arc(_x_1, _y_1 - 9, 7, 0, 2 * Math.PI);
-            crc2.arc(_x_1 + 6, _y_1 + 6, 7, 0, 2 * Math.PI);
-            crc2.arc(_x_1 - 6, _y_1 + 6, 7, 0, 2 * Math.PI);
-            crc2.arc(_x_1 - 8, _y_1 - 4, 7, 0, 2 * Math.PI);
-            crc2.arc(_x_1 + 8, _y_1 - 4, 7, 0, 2 * Math.PI);
-            crc2.fill();
-            //Punkt 
-            crc2.beginPath();
-            crc2.fillStyle = "#FFBF00";
-            crc2.arc(_x_1, _y_1, 3, 0, 2 * Math.PI);
-            crc2.closePath();
-            crc2.fill();
-        }
-    }
-    function drawFlower2(_x, _y) {
-        for (var index = 0; index < 5; index++) {
-            var greenFlower = Math.floor(Math.random() * 200);
-            var blueFlower = Math.floor(Math.random() * 200);
-            var redFlower = Math.floor(Math.random() * 200);
-            var _x_2 = 700 * Math.random();
-            var _y_2 = 600;
-            //Stiel
-            crc2.beginPath();
-            crc2.strokeStyle = "#088A08";
-            crc2.fillStyle = "#0B610B";
-            crc2.fillRect(_x_2 - 2, _y_2 + 10, 4, 40);
-            //Blüte
-            crc2.beginPath();
-            crc2.fillStyle = "rgb( " + greenFlower + ", " + blueFlower + ", " + redFlower + ")";
-            crc2.moveTo(_x_2, _y_2);
-            crc2.arc(_x_2, _y_2 - 9, 7, 0, 2 * Math.PI);
-            crc2.arc(_x_2 + 6, _y_2 + 6, 7, 0, 2 * Math.PI);
-            crc2.arc(_x_2 - 6, _y_2 + 6, 7, 0, 2 * Math.PI);
-            crc2.arc(_x_2 - 8, _y_2 - 4, 7, 0, 2 * Math.PI);
-            crc2.arc(_x_2 + 8, _y_2 - 4, 7, 0, 2 * Math.PI);
-            crc2.fill();
-            //Punkt 
-            crc2.beginPath();
-            crc2.fillStyle = "#FFBF00";
-            crc2.arc(_x_2, _y_2, 3, 0, 2 * Math.PI);
-            crc2.closePath();
-            crc2.fill();
-        }
-    }
-})(canvas || (canvas = {})); //namespaceklammer
+})(L09BlumenwieseClasses || (L09BlumenwieseClasses = {})); //namespaceklammer
 //# sourceMappingURL=mainscript.js.map
