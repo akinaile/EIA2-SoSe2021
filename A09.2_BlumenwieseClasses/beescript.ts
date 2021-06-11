@@ -20,25 +20,6 @@ namespace L09BlumenwieseClasses{
         }
 
 
-        move(_timeslice: number): void { //Velocity+timeslice=weg Geschwindigkeit+Zeit=weg
-            console.log("Bee Move");
-
-            let offset: Vector = new Vector(this.velocity.x, this.velocity.y);//offset=weg
-            offset.scale(_timeslice); //mit scale muliplizieren = Verschiebung
-            this.position.add(offset);
-
-            //damit Objekt innerhalb des Bereichs bleibt
-            if (this.position.x < 0)
-                this.position.x += crc2.canvas.width;
-            if (this.position.y < 0)
-                this.position.y += crc2.canvas.height;
-            if (this.position.x > crc2.canvas.height)
-                this.position.x -= crc2.canvas.width;
-            if (this.position.y > crc2.canvas.height)
-                this.position.y -= crc2.canvas.height;
-        }
-
-
         draw(): void{
             console.log("Bee draw");
             crc2.save();

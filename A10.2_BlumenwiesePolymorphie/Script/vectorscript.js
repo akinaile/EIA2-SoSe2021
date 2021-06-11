@@ -26,6 +26,10 @@ var A10_BlumenwiesePolymorphie;
             this.set(Math.cos(direction), Math.sin(direction));
             this.scale(length);
         };
+        //copy der Position mit gleichem Wert
+        Vector.prototype.copy = function () {
+            return new Vector(this.x, this.y);
+        };
         return Vector;
     }());
     A10_BlumenwiesePolymorphie.Vector = Vector;

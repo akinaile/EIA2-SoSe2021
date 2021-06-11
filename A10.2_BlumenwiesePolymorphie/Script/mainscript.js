@@ -1,21 +1,17 @@
 var A10_BlumenwiesePolymorphie;
 (function (A10_BlumenwiesePolymorphie) {
-    var imageData;
-    var cloudArray = [];
-    var beeArray = [];
-    var flowerArray = [];
-    //Variablen: crc2, Random
     window.addEventListener("load", handleLoad);
-    //Funktion zur Erstelleung des Canvas 
+    var imageData;
+    var flowerArray = []; //flowers don+t move
+    var moveables = [];
     function handleLoad(_event) {
-        console.log("Wiese start");
         var canvas = document.querySelector("canvas");
         A10_BlumenwiesePolymorphie.crc2 = canvas.getContext("2d");
         drawBackgroundGrass();
         drawBackgroundSky();
         drawSun();
         createClouds();
-        window.setInterval(moveCloud, 50);
+        window.setInterval(update, 50);
         drawMountain1();
         drawMountain2();
         drawMountain3();
@@ -28,43 +24,35 @@ var A10_BlumenwiesePolymorphie;
         drawTreeCrown1();
         drawNest();
         //backgroud imageData
-        imageData = A10_BlumenwiesePolymorphie.crc2.getImageData(0, 0, 1000, 750);
+        imageData = A10_BlumenwiesePolymorphie.crc2.getImageData(0, 0, canvas.width, canvas.height);
         createBee(10);
-        window.setInterval(moveBee, 20);
     } //handleload
+    function update() {
+        //console.log("update");
+        A10_BlumenwiesePolymorphie.crc2.clearRect(0, 0, 1000, 750);
+        A10_BlumenwiesePolymorphie.crc2.putImageData(imageData, 0, 0);
+        for (var _i = 0, moveables_1 = moveables; _i < moveables_1.length; _i++) {
+            var moveable = moveables_1[_i];
+            moveable.move(1 / 50);
+            moveable.draw();
+        }
+    }
     function createBee(_amound) {
         for (var i = 0; i < 10; i++) {
             // console.log("create bee");
-            var bee = new A10_BlumenwiesePolymorphie.Bee(0.8);
-            beeArray.push(bee);
-        }
-    }
-    function moveBee() {
-        for (var _i = 0, beeArray_1 = beeArray; _i < beeArray_1.length; _i++) {
-            var bee = beeArray_1[_i];
-            bee.move(1 / 50); //20 ms = 1/50
-            bee.draw();
+            var bee = new A10_BlumenwiesePolymorphie.Bee();
+            moveables.push(bee);
         }
     }
     function createClouds() {
         for (var i = 0; i < 1; i++) {
             var cloud = new A10_BlumenwiesePolymorphie.Cloud(0.5);
-            cloudArray.push(cloud);
+            moveables.push(cloud);
             // console.log(cloudArray);                 
         }
     }
-    function moveCloud() {
-        // console.log("cloud float");
-        A10_BlumenwiesePolymorphie.crc2.clearRect(0, 0, 1000, 750);
-        A10_BlumenwiesePolymorphie.crc2.putImageData(imageData, 0, 0);
-        for (var _i = 0, cloudArray_1 = cloudArray; _i < cloudArray_1.length; _i++) {
-            var cloud = cloudArray_1[_i];
-            cloud.move(1 / 50); //20 ms = 1/50
-            cloud.draw();
-        }
-    }
     function createFlower() {
-        console.log("create flower");
+        //console.log("create flower");
         for (var i = 0; i < 10; i++) {
             var flower = new A10_BlumenwiesePolymorphie.Flower();
             flowerArray.push(flower);

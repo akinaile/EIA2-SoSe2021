@@ -13,21 +13,6 @@ var L09BlumenwieseClasses;
             this.velocity = new L09BlumenwieseClasses.Vector(1000, 0); //Geschwindigkeit
             this.velocity.random(120, 20); //Geschwindigkeit zufällig innerhalb eines Bereichs
         }
-        Bee.prototype.move = function (_timeslice) {
-            console.log("Bee Move");
-            var offset = new L09BlumenwieseClasses.Vector(this.velocity.x, this.velocity.y); //offset=weg
-            offset.scale(_timeslice); //mit scale muliplizieren = Verschiebung
-            this.position.add(offset);
-            //damit Objekt innerhalb des Bereichs bleibt
-            if (this.position.x < 0)
-                this.position.x += L09BlumenwieseClasses.crc2.canvas.width;
-            if (this.position.y < 0)
-                this.position.y += L09BlumenwieseClasses.crc2.canvas.height;
-            if (this.position.x > L09BlumenwieseClasses.crc2.canvas.height)
-                this.position.x -= L09BlumenwieseClasses.crc2.canvas.width;
-            if (this.position.y > L09BlumenwieseClasses.crc2.canvas.height)
-                this.position.y -= L09BlumenwieseClasses.crc2.canvas.height;
-        };
         Bee.prototype.draw = function () {
             console.log("Bee draw");
             L09BlumenwieseClasses.crc2.save();

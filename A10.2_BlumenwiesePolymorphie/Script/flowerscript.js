@@ -2,7 +2,7 @@ var A10_BlumenwiesePolymorphie;
 (function (A10_BlumenwiesePolymorphie) {
     var Flower = /** @class */ (function () {
         function Flower(_position) {
-            console.log("flower constructor");
+            //console.log("flower constructor");
         }
         Flower.prototype.draw = function (_x, _y) {
             for (var index = 0; index < 7; index++) {

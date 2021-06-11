@@ -35,6 +35,8 @@ namespace A10_BlumenwiesePolymorphie{
                 this.position.x -= crc2.canvas.width;
             if (this.position.y > crc2.canvas.height)
                 this.position.y -= crc2.canvas.height;
+
+                
         }
 
 

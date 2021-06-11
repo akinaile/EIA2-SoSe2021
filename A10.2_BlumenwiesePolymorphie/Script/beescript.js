@@ -1,35 +1,35 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var A10_BlumenwiesePolymorphie;
 (function (A10_BlumenwiesePolymorphie) {
-    var Bee = /** @class */ (function () {
+    var Bee = /** @class */ (function (_super) {
+        __extends(Bee, _super);
         //konstruieren der Biene
-        function Bee(_size, _position) {
-            console.log("bee Constructor");
+        function Bee(_position) {
+            var _this = _super.call(this, _position) || this;
             //position
             if (_position)
-                this.position = _position; //position, wie deklaiert
+                _this.position = _position; //position, wie deklaiert
             else
-                this.position = new A10_BlumenwiesePolymorphie.Vector(750, 470); //position, wenn kein Vektor angegeben ist
+                _this.position = new A10_BlumenwiesePolymorphie.Vector(750, 470); //position, wenn kein Vektor angegeben ist
             //geschwindigkeit
-            this.velocity = new A10_BlumenwiesePolymorphie.Vector(1000, 0); //Geschwindigkeit
-            this.velocity.random(120, 20); //Geschwindigkeit zufällig innerhalb eines Bereichs
+            _this.velocity = new A10_BlumenwiesePolymorphie.Vector(1000, 0); //Geschwindigkeit
+            _this.velocity.random(120, 20); //Geschwindigkeit zufällig innerhalb eines Bereichs
+            return _this;
         }
-        Bee.prototype.move = function (_timeslice) {
-            console.log("Bee Move");
-            var offset = new A10_BlumenwiesePolymorphie.Vector(this.velocity.x, this.velocity.y); //offset=weg
-            offset.scale(_timeslice); //mit scale muliplizieren = Verschiebung
-            this.position.add(offset);
-            //damit Objekt innerhalb des Bereichs bleibt
-            if (this.position.x < 0)
-                this.position.x += A10_BlumenwiesePolymorphie.crc2.canvas.width;
-            if (this.position.y < 0)
-                this.position.y += A10_BlumenwiesePolymorphie.crc2.canvas.height;
-            if (this.position.x > A10_BlumenwiesePolymorphie.crc2.canvas.height)
-                this.position.x -= A10_BlumenwiesePolymorphie.crc2.canvas.width;
-            if (this.position.y > A10_BlumenwiesePolymorphie.crc2.canvas.height)
-                this.position.y -= A10_BlumenwiesePolymorphie.crc2.canvas.height;
-        };
         Bee.prototype.draw = function () {
-            console.log("Bee draw");
+            //console.log("Bee draw");
             A10_BlumenwiesePolymorphie.crc2.save();
             A10_BlumenwiesePolymorphie.crc2.beginPath();
             //körper
@@ -81,7 +81,7 @@ var A10_BlumenwiesePolymorphie;
             A10_BlumenwiesePolymorphie.crc2.restore();
         };
         return Bee;
-    }()); //classklammer
+    }(A10_BlumenwiesePolymorphie.Moveable)); //classklammer
     A10_BlumenwiesePolymorphie.Bee = Bee;
 })(A10_BlumenwiesePolymorphie || (A10_BlumenwiesePolymorphie = {})); //namespaceklammer
 //# sourceMappingURL=beescript.js.map

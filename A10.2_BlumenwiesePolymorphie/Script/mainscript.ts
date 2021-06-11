@@ -1,17 +1,13 @@
 namespace A10_BlumenwiesePolymorphie { //Busch und Pflanze habe ich mir etwas bei Mona S. abgeschaut
 
-    //Interface für Random Positionen (x,y)
-    interface Vector {
-        x: number;
-        y: number; 
-    }
+
     window.addEventListener("load", handleLoad);
+
+    export let canvas: HTMLCanvasElement;
     export let crc2: CanvasRenderingContext2D;
 
     let imageData: ImageData;
-    let cloudArray: Cloud [] = [];
-    let beeArray: Bee [] = [];
-    let flowerArray: Flower [] = [];
+    let flowerArray: Flower [] = []; //flowers don+t move
     let moveables: Moveable [] = [];
 
     function handleLoad(_event: Event): void {
@@ -25,6 +21,7 @@ namespace A10_BlumenwiesePolymorphie { //Busch und Pflanze habe ich mir etwas be
         drawSun();
 
         createClouds(); 
+        window.setInterval(update, 50);
 
         drawMountain1();
         drawMountain2();
@@ -42,17 +39,18 @@ namespace A10_BlumenwiesePolymorphie { //Busch und Pflanze habe ich mir etwas be
         drawNest();
 
         //backgroud imageData
-        imageData = crc2.getImageData(0, 0, 1000, 750);
+        imageData = crc2.getImageData(0, 0, canvas.width, canvas.height);
         createBee(10);
-        window.setInterval(update, 20);
+        
 }//handleload
 
     function update(): void {
-        console.log("Update");
-        crc2.fillRect(0, 0, crc2.canvas.width, crc2.canvas.height);
+        //console.log("update");
+        crc2.clearRect(0, 0, 1000, 750);
+        crc2.putImageData(imageData, 0, 0);
 
         for (let moveable of moveables) {
-            moveable.move(1 / 50);
+            moveable.move(1/50);
             moveable.draw();
         }
     }   
@@ -65,12 +63,6 @@ namespace A10_BlumenwiesePolymorphie { //Busch und Pflanze habe ich mir etwas be
         }
     }
 
-    function moveBee(): void {    
-        for (let bee of beeArray) {
-            bee.move(1 / 50); //20 ms = 1/50
-            bee.draw();
-        }
-    }
 
     function createClouds(): void {
         for (let i: number = 0; i < 1; i++) {
@@ -79,17 +71,6 @@ namespace A10_BlumenwiesePolymorphie { //Busch und Pflanze habe ich mir etwas be
             // console.log(cloudArray);                 
         }
     }
-
-    function moveCloud(): void {
-        // console.log("cloud float");
-        crc2.clearRect(0, 0, 1000, 750);
-        crc2.putImageData(imageData, 0, 0);
-
-        for (let cloud of cloudArray) {
-            cloud.move(1 / 50); //20 ms = 1/50
-            cloud.draw();
-        }
-    } 
 
     function createFlower(): void {
         //console.log("create flower");

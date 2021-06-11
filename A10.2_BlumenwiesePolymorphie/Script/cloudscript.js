@@ -1,31 +1,31 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var A10_BlumenwiesePolymorphie;
 (function (A10_BlumenwiesePolymorphie) {
-    var Cloud = /** @class */ (function () {
+    var Cloud = /** @class */ (function (_super) {
+        __extends(Cloud, _super);
         function Cloud(_size, _position) {
-            console.log("cloud constructor");
+            var _this = _super.call(this, _position) || this;
             if (_position)
-                this.position = _position;
+                _this.position = _position;
             else
-                this.position = new A10_BlumenwiesePolymorphie.Vector(20, 100);
-            this.velocity = new A10_BlumenwiesePolymorphie.Vector(100, 0);
-            this.size = _size;
+                _this.position = new A10_BlumenwiesePolymorphie.Vector(20, 100);
+            _this.velocity = new A10_BlumenwiesePolymorphie.Vector(100, 0);
+            _this.size = _size;
+            return _this;
         }
-        Cloud.prototype.move = function (_timeslice) {
-            console.log("cloud move");
-            var offset = new A10_BlumenwiesePolymorphie.Vector(this.velocity.x, this.velocity.y);
-            offset.scale(_timeslice);
-            this.position.add(offset);
-            if (this.position.x < 0)
-                this.position.x += A10_BlumenwiesePolymorphie.crc2.canvas.width;
-            if (this.position.y < 0)
-                this.position.y += A10_BlumenwiesePolymorphie.crc2.canvas.height;
-            if (this.position.x > A10_BlumenwiesePolymorphie.crc2.canvas.width)
-                this.position.x -= A10_BlumenwiesePolymorphie.crc2.canvas.width;
-            if (this.position.y > A10_BlumenwiesePolymorphie.crc2.canvas.height)
-                this.position.y -= A10_BlumenwiesePolymorphie.crc2.canvas.height;
-        };
         Cloud.prototype.draw = function () {
-            // console.log("cloud draw");
             var grd = A10_BlumenwiesePolymorphie.crc2.createLinearGradient(0, 0, 0, 250); //create Gradient
             grd.addColorStop(0, "#FFFFFF");
             grd.addColorStop(1, "#A9E2F3");
@@ -46,7 +46,7 @@ var A10_BlumenwiesePolymorphie;
             A10_BlumenwiesePolymorphie.crc2.restore();
         };
         return Cloud;
-    }()); //classklammer
+    }(A10_BlumenwiesePolymorphie.Moveable)); //classklammer
     A10_BlumenwiesePolymorphie.Cloud = Cloud;
 })(A10_BlumenwiesePolymorphie || (A10_BlumenwiesePolymorphie = {})); //namespaceende
 //# sourceMappingURL=cloudscript.js.map
