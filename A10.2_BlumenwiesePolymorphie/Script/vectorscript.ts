@@ -32,6 +32,10 @@ namespace A10_BlumenwiesePolymorphie{
             this.scale(length);
             
         }
+        //copy der Position mit gleichem Wert
+        copy(): Vector {
+            return new Vector(this.x, this.y);
+        }
     }
 
 }//namespaceklammer

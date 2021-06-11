@@ -5,110 +5,115 @@ namespace A10_BlumenwiesePolymorphie { //Busch und Pflanze habe ich mir etwas be
         x: number;
         y: number; 
     }
-    
+    window.addEventListener("load", handleLoad);
+    export let crc2: CanvasRenderingContext2D;
+
     let imageData: ImageData;
     let cloudArray: Cloud [] = [];
     let beeArray: Bee [] = [];
     let flowerArray: Flower [] = [];
+    let moveables: Moveable [] = [];
 
-    //Variablen: crc2, Random
-    window.addEventListener("load", handleLoad);
-    export let crc2: CanvasRenderingContext2D;
-    
-    //Funktion zur Erstelleung des Canvas 
     function handleLoad(_event: Event): void {
-        console.log("Wiese start");
 
-    let canvas : HTMLCanvasElement | null = document.querySelector("canvas")!;
-    crc2 = <CanvasRenderingContext2D>canvas.getContext("2d")!;
-    
-    drawBackgroundGrass();
-    drawBackgroundSky();
+        let canvas : HTMLCanvasElement | null = document.querySelector("canvas")!;
+        crc2 = <CanvasRenderingContext2D>canvas.getContext("2d")!;
+        
+        drawBackgroundGrass();
+        drawBackgroundSky();
 
-    drawSun();
+        drawSun();
 
-    createClouds();
-    window.setInterval(moveCloud, 50);   
+        createClouds(); 
 
-    drawMountain1();
-    drawMountain2();
-    drawMountain3();
-    drawBush1();
-    drawBush2();
-    drawBush3();
-    drawBush4();
+        drawMountain1();
+        drawMountain2();
+        drawMountain3();
+        drawBush1();
+        drawBush2();
+        drawBush3();
+        drawBush4();
 
-    createFlower();
-    drawFlower();
-    
-    drawTreeCrown1();
+        createFlower();
+        drawFlower();
+        
+        drawTreeCrown1();
 
-    drawNest();
+        drawNest();
 
-    //backgroud imageData
-    imageData = crc2.getImageData(0, 0, 1000, 750);
-    createBee(10);
-    window.setInterval(moveBee, 20);
-
+        //backgroud imageData
+        imageData = crc2.getImageData(0, 0, 1000, 750);
+        createBee(10);
+        window.setInterval(update, 20);
 }//handleload
-   
-function createBee(_amound: number): void {
-    for (let i: number = 0; i < 10; i++) {
-        // console.log("create bee");
-        let bee: Bee = new Bee(0.8);
-        beeArray.push(bee);    
+
+    function update(): void {
+        console.log("Update");
+        crc2.fillRect(0, 0, crc2.canvas.width, crc2.canvas.height);
+
+        for (let moveable of moveables) {
+            moveable.move(1 / 50);
+            moveable.draw();
+        }
+    }   
+
+    function createBee(_amound: number): void {
+        for (let i: number = 0; i < 10; i++) {
+            // console.log("create bee");
+            let bee: Moveable = new Bee();
+            moveables.push(bee);    
+        }
     }
-}
 
-function moveBee(): void {    
-    for (let bee of beeArray) {
-        bee.move(1 / 50); //20 ms = 1/50
-        bee.draw();
+    function moveBee(): void {    
+        for (let bee of beeArray) {
+            bee.move(1 / 50); //20 ms = 1/50
+            bee.draw();
+        }
     }
-}
 
-function createClouds(): void {
-    for (let i: number = 0; i < 1; i++) {
-        let cloud: Cloud = new Cloud(0.5);
-        cloudArray.push(cloud);
-        // console.log(cloudArray);                 
+    function createClouds(): void {
+        for (let i: number = 0; i < 1; i++) {
+            let cloud: Moveable = new Cloud(0.5);
+            moveables.push(cloud);
+            // console.log(cloudArray);                 
+        }
     }
-}
 
-function moveCloud(): void {
-    // console.log("cloud float");
-    crc2.clearRect(0, 0, 1000, 750);
-    crc2.putImageData(imageData, 0, 0);
+    function moveCloud(): void {
+        // console.log("cloud float");
+        crc2.clearRect(0, 0, 1000, 750);
+        crc2.putImageData(imageData, 0, 0);
 
-    for (let cloud of cloudArray) {
-        cloud.move(1 / 50); //20 ms = 1/50
-        cloud.draw();
-    }
-} 
-
-function createFlower(): void {
-    console.log("create flower");
-    for (let i: number = 0; i < 10; i++) {
-        let flower: Flower = new Flower();
-        flowerArray.push(flower);  
+        for (let cloud of cloudArray) {
+            cloud.move(1 / 50); //20 ms = 1/50
+            cloud.draw();
+        }
     } 
-    for (let i: number = 0; i < 10; i++) {
-        let flower2: Flower = new Flower();
-        flowerArray.push(flower2);  
-}
-}
-function drawFlower(): void {
-    for (let flower of flowerArray) {
-        let randomX: number = Math.floor(Math.random() * 900);
-        let randomY: number = Math.floor(Math.random() * 200);
-        flower.draw(randomX + 50, randomY + 370);
+
+    function createFlower(): void {
+        //console.log("create flower");
+        for (let i: number = 0; i < 10; i++) {
+            let flower: Flower = new Flower();
+            flowerArray.push(flower);  
+        } 
+        for (let i: number = 0; i < 10; i++) {
+            let flower2: Flower = new Flower();
+            flowerArray.push(flower2);  
+        }
     }
-    for (let flower2 of flowerArray) {
-        let randomX: number = Math.floor(Math.random() * 900);
-        let randomY: number = Math.floor(Math.random() * 200);
-        flower2.draw2(randomX + 50, randomY + 470);
+    function drawFlower(): void {
+        for (let flower of flowerArray) {
+            let randomX: number = Math.floor(Math.random() * 900);
+            let randomY: number = Math.floor(Math.random() * 200);
+            flower.draw(randomX + 50, randomY + 370);
+        }
+        for (let flower2 of flowerArray) {
+            let randomX: number = Math.floor(Math.random() * 900);
+            let randomY: number = Math.floor(Math.random() * 200);
+            flower2.draw2(randomX + 50, randomY + 470);
+        }
     }
-}
 
 //Sky
     function drawBackgroundSky (): void {
@@ -316,46 +321,46 @@ function drawFlower(): void {
 
 
 
-function drawNest(): void {
-    //Nest
-    crc2.save();
-    crc2.beginPath();
-    crc2.ellipse(750, 460, 50, 65, Math.PI / 1, 0, 2 * Math.PI);
-    crc2.fillStyle = "#FF9933";
-    crc2.strokeStyle = "#996600";
-    crc2.lineWidth = 5;
-    crc2.stroke();
-    crc2.fill();
-    crc2.closePath();
-    //streifen
-    crc2.beginPath();
-    crc2.moveTo(710, 420);
-    crc2.lineTo(790, 420);
-    crc2.moveTo(700, 450);
-    crc2.lineTo(800, 450);
-    crc2.moveTo(700, 470);
-    crc2.lineTo(800, 470);
-    crc2.moveTo(710, 500);
-    crc2.lineTo(790, 500);
-    crc2.strokeStyle = "#996600";
-    crc2.lineWidth = 3;
-    crc2.stroke();
-    crc2.closePath();
-    //tür
-    crc2.beginPath();
-    crc2.arc(750, 470, 15, 0, 2 * Math.PI);
-    crc2.fillStyle = "#996600";
-    crc2.fill();
-    crc2.closePath();
-    //türschatten
-    crc2.beginPath();
-    crc2.arc(750, 470, 10, 0, 2 * Math.PI);
-    crc2.fillStyle = "#663300";
-    crc2.fill();
-    crc2.closePath();
+    function drawNest(): void {
+        //Nest
+        crc2.save();
+        crc2.beginPath();
+        crc2.ellipse(750, 460, 50, 65, Math.PI / 1, 0, 2 * Math.PI);
+        crc2.fillStyle = "#FF9933";
+        crc2.strokeStyle = "#996600";
+        crc2.lineWidth = 5;
+        crc2.stroke();
+        crc2.fill();
+        crc2.closePath();
+        //streifen
+        crc2.beginPath();
+        crc2.moveTo(710, 420);
+        crc2.lineTo(790, 420);
+        crc2.moveTo(700, 450);
+        crc2.lineTo(800, 450);
+        crc2.moveTo(700, 470);
+        crc2.lineTo(800, 470);
+        crc2.moveTo(710, 500);
+        crc2.lineTo(790, 500);
+        crc2.strokeStyle = "#996600";
+        crc2.lineWidth = 3;
+        crc2.stroke();
+        crc2.closePath();
+        //tür
+        crc2.beginPath();
+        crc2.arc(750, 470, 15, 0, 2 * Math.PI);
+        crc2.fillStyle = "#996600";
+        crc2.fill();
+        crc2.closePath();
+        //türschatten
+        crc2.beginPath();
+        crc2.arc(750, 470, 10, 0, 2 * Math.PI);
+        crc2.fillStyle = "#663300";
+        crc2.fill();
+        crc2.closePath();
 
 
 
-}
+    }
 
 } //namespaceklammer

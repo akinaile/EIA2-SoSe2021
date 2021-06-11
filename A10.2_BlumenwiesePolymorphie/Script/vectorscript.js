@@ -1,5 +1,5 @@
-var L09BlumenwieseClasses;
-(function (L09BlumenwieseClasses) {
+var A10_BlumenwiesePolymorphie;
+(function (A10_BlumenwiesePolymorphie) {
     var Vector = /** @class */ (function () {
         function Vector(_x, _y) {
             this.set(_x, _y);
@@ -28,6 +28,6 @@ var L09BlumenwieseClasses;
         };
         return Vector;
     }());
-    L09BlumenwieseClasses.Vector = Vector;
-})(L09BlumenwieseClasses || (L09BlumenwieseClasses = {})); //namespaceklammer
+    A10_BlumenwiesePolymorphie.Vector = Vector;
+})(A10_BlumenwiesePolymorphie || (A10_BlumenwiesePolymorphie = {})); //namespaceklammer
 //# sourceMappingURL=vectorscript.js.map

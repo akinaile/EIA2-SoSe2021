@@ -3,7 +3,7 @@ namespace A10_BlumenwiesePolymorphie {
     export class Flower {
 
         constructor(_position?: Vector) {
-            console.log("flower constructor");
+            //console.log("flower constructor");
         }
 
         draw(_x: number, _y: number): void {

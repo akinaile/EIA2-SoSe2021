@@ -1,12 +1,12 @@
 namespace A10_BlumenwiesePolymorphie{
 
-    export class Cloud {
+    export class Cloud extends Moveable {
         position: Vector;
         velocity: Vector;
         size: number;
 
         constructor(_size: number, _position?: Vector) {
-            console.log("cloud constructor");
+            super(_position);
 
             if (_position) 
                 this.position = _position;
@@ -18,7 +18,7 @@ namespace A10_BlumenwiesePolymorphie{
         }
 
         move(_timeslice: number): void {
-            console.log("cloud move");
+            
             let offset: Vector = new Vector(this.velocity.x, this.velocity.y);
             offset.scale(_timeslice);
             this.position.add(offset);
